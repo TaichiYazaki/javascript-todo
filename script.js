@@ -17,31 +17,40 @@
     todos.push({ text: todoInput.value, done: false });
     render();
 
-    todoInput.value = ' '
+    todoInput.value = ''
   };
 
   let render = function () {
-    let checkBox = document.createElement('input');
-    checkBox.type = 'checkbox';
+    todoList.innerHTML = '';
+    todos.forEach(function (todo) {
+      let checkBox = document.createElement('input');
+      checkBox.type = 'checkbox';
+      checkBox.checked = todo.done;
+      checkBox.addEventListener('chenge', function (e) {
+        todo.done = e.target.checked;
+      })
 
-    let span = document.createElement('span');
-    span.textContent = todoInput.value;
+      let span = document.createElement('span');
+      span.textContent = todo.text;
 
-    let label = document.createElement('label');
-    label.appendChild(checkBox);
-    label.appendChild(span);
+      let label = document.createElement('label');
+      label.appendChild(checkBox);
+      label.appendChild(span);
 
-    let deletebtn = document.createElement('button');
-    deletebtn.textContent = '削除';
-    deletebtn.addEventListener('click', deleteItem);
+      let deletebtn = document.createElement('button');
+      deletebtn.textContent = '削除';
+      deletebtn.addEventListener('click', function () {
+        let index = todos.indexOf(todo);
+        todos.splice(index, 1);
+        render();
+      });
 
-    let listItem = document.createElement('li');
-    listItem.appendChild(label);
-    listItem.appendChild(deletebtn);
+      let listItem = document.createElement('li');
+      listItem.appendChild(label);
+      listItem.appendChild(deletebtn);
 
-    todoList.appendChild(listItem);
-
-
+      todoList.appendChild(listItem);
+    });
   }
 
   let deleteItem = function (e) {
