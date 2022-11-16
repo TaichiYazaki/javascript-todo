@@ -1,7 +1,12 @@
 (function () {
   'use strict';
 
-  let todos = [];
+  let todos = localStorage.getItem('todos');
+  if(todos) {
+    todos = JSON.parse(todos);
+  }else{
+    todos = [];
+  }
   let todoForm = document.getElementById('todo-form');
   let todoList = document.getElementById('todo-list');
   let todoInput = document.querySelector('#todo-form input')
@@ -50,6 +55,8 @@
       listItem.appendChild(deletebtn);
 
       todoList.appendChild(listItem);
+
+      localStorage.setItem('todos', JSON.stringify(todos));
     });
   }
 
@@ -59,4 +66,6 @@
   }
 
   todoForm.addEventListener('submit', addItem);
+  
+  render();
 }());
